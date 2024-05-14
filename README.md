@@ -19,5 +19,9 @@ tiny-spice-parser
 - https://www.analog.com/en/products/ad8275.html
   - both spice and datasheet
 
+### Netlist
+- https://github.com/dan-fritchman/Netlist
+
 ### Reference
 - https://github.com/SpiceSharp/SpiceSharpParser
+- http://www.wrcad.com/manual/wrsmanual/node1.html
