@@ -18,3 +18,6 @@ tiny-spice-parser
 ### AD
 - https://www.analog.com/en/products/ad8275.html
   - both spice and datasheet
+
+### Reference
+- https://github.com/SpiceSharp/SpiceSharpParser
