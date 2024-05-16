@@ -10,6 +10,7 @@ tiny-spice-parser
 
 ### BJT model
 - https://techdocs.altium.com/display/AMSE/Bipolar+Junction+Transistor+(BJT)+Model
+- **https://www.mikrocontroller.net/attachment/168555/Modeling_BJTs_in_Multisim.pdf**
 
 ### onsemi
 - https://www.onsemi.com/design/resources/technical-documentation
