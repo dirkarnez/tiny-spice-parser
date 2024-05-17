@@ -4,7 +4,11 @@ tiny-spice-parser
 ### TODO
 - [ ] to calculation base on the spice
   - ChatGPT `VAF + (log(IC/IS) - 1) * (BF / RB + VJE)`?
+- [ ] Study microcap
+  - https://www.iee.et.tu-dresden.de/~jmueller/simulation/soft/microcap/MC12.RefManual.pdf
+  
 ### PSPICE grammar
+- https://www.orcad.com/pspice-free-trial
 - https://www.seas.upenn.edu/~jan/spice/PSpice_ReferenceguideOrCAD.pdf
 - https://engineering.purdue.edu/~ee255d3/files/PSPICEtutorial.pdf
 
@@ -26,3 +30,6 @@ tiny-spice-parser
 ### Reference
 - https://github.com/SpiceSharp/SpiceSharpParser
 - http://www.wrcad.com/manual/wrsmanual/node1.html
+- https://www.pspice.com/amplifiers-and-linear-ics/operational-amplifiers/cmos
+- https://github.com/ottoragam/Orcad-libraries
+- https://github.com/Werni2A/OpenOrCadParser/tree/main
