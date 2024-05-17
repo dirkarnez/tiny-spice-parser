@@ -14,6 +14,11 @@ tiny-spice-parser
 - https://www.seas.upenn.edu/~jan/spice/PSpice_ReferenceguideOrCAD.pdf
 - https://engineering.purdue.edu/~ee255d3/files/PSPICEtutorial.pdf
 - https://www.ti.com/lit/an/sloa070/sloa070.pdf
+- [Basic SPICE Simulation Model Parameters - NI](https://www.ni.com/en/shop/electronic-test-instrumentation/application-software-for-electronic-test-and-instrumentation-category/what-is-multisim/spice-simulation-fundamentals/basic-spice-simulation-model-parameters-.html)
+- https://www.ece.mcgill.ca/~grober4/SPICE/SPICE_Decks/1st_Edition_LTSPICE/chapter4/Chapter%204%20BJTs%20web%20version.html
+- https://www.mikrocontroller.net/attachment/168555/Modeling_BJTs_in_Multisim.pdf
+- https://resources.pcb.cadence.com/blog/2020-determining-spice-model-parameters-for-transistors-easily-and-accurately
+- [BJT](https://help.altair.com/activate/help/en_us/block_reference_guide/_mo/_lib/Spice/HTML/bjt_t.html)
 
 ### BJT model
 - https://techdocs.altium.com/display/AMSE/Bipolar+Junction+Transistor+(BJT)+Model
@@ -36,7 +41,9 @@ tiny-spice-parser
 - https://github.com/ujjawalece/Biomedical-Data-Acquisition-ECG
 - https://github.com/Vladi2017/OrCAD_PSpice_1
 
-
+### Extra
+- monte carlo
+  - https://resources.pcb.cadence.com/blog/2019-monte-carlo-analysis-and-simulation-for-electronic-circuits
 
 ### Reference
 - https://github.com/SpiceSharp/SpiceSharpParser
