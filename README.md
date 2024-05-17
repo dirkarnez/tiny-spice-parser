@@ -6,7 +6,7 @@ tiny-spice-parser
   - ChatGPT `VAF + (log(IC/IS) - 1) * (BF / RB + VJE)`?
 - [ ] Study microcap
   - https://www.iee.et.tu-dresden.de/~jmueller/simulation/soft/microcap/MC12.RefManual.pdf
-  
+- [ ] Constraint programming
 ### PSPICE grammar
 - https://www.orcad.com/pspice-free-trial
 - https://www.seas.upenn.edu/~jan/spice/PSpice_ReferenceguideOrCAD.pdf
