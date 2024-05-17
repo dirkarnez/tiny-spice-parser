@@ -29,6 +29,14 @@ tiny-spice-parser
 ### Netlist
 - https://github.com/dan-fritchman/Netlist
 
+### Model files / circuit
+- https://github.com/killerzman/OrCAD-AudioPowerAmplifier
+- https://github.com/NikolaosGian/opAmp
+- https://github.com/ujjawalece/Biomedical-Data-Acquisition-ECG
+- https://github.com/Vladi2017/OrCAD_PSpice_1
+
+
+
 ### Reference
 - https://github.com/SpiceSharp/SpiceSharpParser
 - http://www.wrcad.com/manual/wrsmanual/node1.html
