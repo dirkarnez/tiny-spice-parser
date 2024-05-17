@@ -13,6 +13,7 @@ tiny-spice-parser
 - https://www.orcad.com/pspice-free-trial
 - https://www.seas.upenn.edu/~jan/spice/PSpice_ReferenceguideOrCAD.pdf
 - https://engineering.purdue.edu/~ee255d3/files/PSPICEtutorial.pdf
+- https://www.ti.com/lit/an/sloa070/sloa070.pdf
 
 ### BJT model
 - https://techdocs.altium.com/display/AMSE/Bipolar+Junction+Transistor+(BJT)+Model
