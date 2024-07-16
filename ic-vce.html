@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BJT IC-VCE Graph</title>
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist@2.33.0/plotly.min.js"></script>
+</head>
+<body>
+  <div id="graph"></div>
+  <script>
+    // Function to parse SPICE model file and extract parameters
+    function parseSpiceModel(modelFile) {
+      // Split the file into lines
+      debugger;
+      const lines = modelFile.split('\n');
+
+      // Initialize parameters
+      let Is, Bf, Br, Cje, Cjc, Vaf, Var, Xtb, Rc, Re = 0;
+
+      // Parse the lines and extract the parameters
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (line.startsWith('+')) {
+          // Extract parameter values from the model line
+          const params = line.split(/\s+/);
+          Is = parseFloat(params[1].split('=')[1]);
+          Bf = parseFloat(params[2].split('=')[1]);
+          Br = parseFloat(params[3].split('=')[1]);
+          Cje = parseFloat(params[4].split('=')[1]);
+          Cjc = parseFloat(params[5].split('=')[1]);
+          Vaf = parseFloat(params[6].split('=')[1]);
+          Var = parseFloat(params[7].split('=')[1]);
+          Xtb = parseFloat(params[8].split('=')[1]);
+          Rc = parseFloat(params[9].split('=')[1]);
+          Re = parseFloat(params[10].split('=')[1]);
+          break;
+        }
+      }
+
+      return { Is, Bf, Br, Cje, Cjc, Vaf, Var, Xtb, Rc, Re };
+    }
+
+    // Function to generate the IC-VCE graph
+    function generateICVCEGraph(modelFile) {
+      // Parse the SPICE model file
+      const { Is, Bf, Br, Cje, Cjc, Vaf, Var, Xtb, Rc, Re } = parseSpiceModel(modelFile);
+
+      // Define the voltage and current ranges
+      const Vce = [0, 50];
+      const Ic = [];
+      const Ib = [];
+
+      // Calculate the IC-VCE and IB-VCE curves
+      for (let v = Vce[0]; v <= Vce[1]; v += 10) {
+        const ic = Is * (Math.exp(v / (0.026 * Vaf)) - 1);
+        const ib = ic / Bf;
+        Ic.push(ic);
+        Ib.push(ib);
+      }
+
+      debugger;
+
+      // Create the Plotly plot
+      const layout = {
+        title: 'BJT IC-VCE Graph',
+        xaxis: { title: 'VCE (V)' },
+        yaxis: { title: 'IC (A)' }
+      };
+
+      const data = [
+        //{ x: Vce, y: Ic, mode: 'lines', name: 'IC' },
+        { x: Vce, y: Ic, mode: 'lines', name: 'IB' },
+        // { x: Vce, y: Ib, mode: 'lines', name: 'IB' }
+      ];
+
+      Plotly.newPlot('graph', data, layout);
+    }
+// + IS=14.34e-15 BF=100 BR=1 CJE=13.0p CJC=7.0p VAF=74 VAR=4.5 XTB=1.5 RC=1 RE=1
+    // Example usage
+    const spiceModelFile = `
+.model 2N2222 NPN
++ IS=3.88184e-14 BF=929.846 BR=48.4545 CJE=2.23677e-11 CJC=2.23943e-11 VAF=16.5003 VAR=40.538 XTB=0.1 RC=0.426673 RE=0.0001
+    `;
+
+    generateICVCEGraph(spiceModelFile);
+  </script>
+</body>
+</html>
