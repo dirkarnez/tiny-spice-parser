@@ -9,6 +9,76 @@ tiny-spice-parser
 - [ ] Study Kicad
   - **https://github.com/KiCad/kicad-source-mirror/tree/master/eeschema/sim**
 - [ ] Constraint programming
+- [ ] https://github.com/urish/circuit-sandbox!!!!!!!!!!!!!!!!!!!!!!
+```js
+	///////////////////////////////////////////////////////////////////////////////
+	//
+	//  Very basic Ebers-Moll BJT model
+	//
+	///////////////////////////////////////////////////////////////////////////////
+
+    function bjt(c,b,e,area,Ics,Ies,af,ar,name,type) {
+	    Device.call(this);
+	    this.e = e;
+	    this.b = b;
+	    this.c = c;
+	    this.name = name;
+	    this.af = af;
+	    this.ar = ar;
+	    this.area = area;
+	    this.aIcs = this.area*Ics;
+        this.aIes = this.area*Ies;
+	    if (type != 'n' && type != 'p') { 
+	    	throw 'BJT type is not npn or pnp';
+	    }
+	    this.type_sign = (type == 'n') ? 1 : -1;
+	    this.vt = 0.026;
+	    this.leakCond = 1.0e-12;
+	}
+	bjt.prototype = new Device();
+        bjt.prototype.constructor = bjt;
+
+        bjt.prototype.load_linear = function(ckt) {
+	    // bjt's are nonlinear, just like javascript progammers
+	};
+
+        bjt.prototype.load_dc = function(ckt,soln,rhs) {
+	    let e = this.e; let b = this.b; let c = this.c;
+	    let vbc = this.type_sign * ckt.get_two_terminal(b, c, soln);
+	    let vbe = this.type_sign * ckt.get_two_terminal(b, e, soln);
+        let IrGr = diodeEval(vbc, this.vt, this.aIcs);
+        let IfGf = diodeEval(vbe, this.vt, this.aIes);
+
+        // Sign convention is emitter and collector currents are leaving.
+        let ie = this.type_sign * (IfGf[0] - this.ar*IrGr[0]);
+        let ic = this.type_sign * (IrGr[0] - this.af*IfGf[0]);
+        let ib = -(ie+ic);  		//current flowing out of base
+
+	    ckt.add_to_rhs(b,ib,rhs);  	//current flowing out of base
+	    ckt.add_to_rhs(c,ic,rhs);  	//current flowing out of collector
+	    ckt.add_to_rhs(e,ie,rhs);   //and out emitter
+	    ckt.add_conductance(b,e,IfGf[1]);
+	    ckt.add_conductance(b,c,IrGr[1]);
+	    ckt.add_conductance(c,e,this.leakCond);
+
+	    ckt.add_to_G(b, c, this.ar*IrGr[1]);
+	    ckt.add_to_G(b, e, this.af*IfGf[1]);	    
+	    ckt.add_to_G(b, b, -(this.af*IfGf[1] + this.ar*IrGr[1]));
+	    
+	    ckt.add_to_G(e, b, this.ar*IrGr[1]);
+	    ckt.add_to_G(e, c, -this.ar*IrGr[1]);
+	    
+	    ckt.add_to_G(c, b, this.af*IfGf[1]);
+	    ckt.add_to_G(c, e, -this.af*IfGf[1]);
+	};
+
+        bjt.prototype.load_tran = function(ckt,soln,crnt,chg,time) {
+	    this.load_dc(ckt,soln,crnt,crnt);
+	};
+
+	bjt.prototype.load_ac = function(ckt) {
+	};
+```
 ### PSPICE grammar
 - https://www.orcad.com/pspice-free-trial
 - https://www.seas.upenn.edu/~jan/spice/PSpice_ReferenceguideOrCAD.pdf
