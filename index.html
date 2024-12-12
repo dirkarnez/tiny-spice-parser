@@ -141,6 +141,7 @@
             
 
 /*
+
     .MODEL 1N4148 D (
         BV=100 
         CJO=1.337p  // - junction capacitance, (=0F),
@@ -165,13 +166,32 @@
 
             // console.log((boltzmannsConstantJoulePerK * roomTemperatureKelvin) / electronicChargeCoulomb);
 
-            console.log(`@@@@@@@@${8e-9 * (Math.exp((electronicChargeCoulomb * 1) / (2 * boltzmannsConstantJoulePerK * roomTemperatureKelvin)) - 1)}`);
+            console.log(`@@@@@@@@${(8e-9 * (Math.exp((electronicChargeCoulomb * 0.995624) / (2.011 * boltzmannsConstantJoulePerK * roomTemperatureKelvin)) - 1)) - (0.995624 / 0.649339)}`);
 
             // For silicon diodes a typical saturation current is 1 * Math.pow(10, -12)
             let saturationCurrentDefault = 1 * Math.pow(10, -12);
-            let saturationCurrent = 8 * Math.pow(10, -9); // 8×10-9 A
-            return saturationCurrent * (Math.exp((electronicChargeCoulomb * x_is_Vd) / ( 2 * boltzmannsConstantJoulePerK * roomTemperatureKelvin)) - 1)
+            let saturationCurrent = 8e-9; // 8×10-9 A
+            return saturationCurrent * (Math.exp((electronicChargeCoulomb * x_is_Vd) / ( 2.011 * boltzmannsConstantJoulePerK * roomTemperatureKelvin)) - 1)
         }
+
+        /*
+        
+        
+        gDarkIVn.voltages = [];
+gDarkIVn.currents = [];
+
+function graphDarkIVn() {
+    var a = Math.pow(10, I01LogDarkIVnRange.value); //8.511380382023759e-13
+    var d = idealityDarkIVnRange.value; //1.2
+
+    for (var c, b = 0; 300 >= b; b++) 
+        gDarkIVn.currents[b] = a * Math.exp(v / (.02568 * d));
+
+    gDarkIVn.drawGraph();
+    gDarkIVn.addPlot(gDarkIVn.voltages, gDarkIVn.currents, "", "red")
+}
+
+        */
 
         // sine stuff
         function makeSineData(left, right, N, amplitude, omega, theta) {
