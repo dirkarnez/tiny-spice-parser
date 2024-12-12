@@ -90,10 +90,12 @@ tiny-spice-parser
 - https://resources.pcb.cadence.com/blog/2020-determining-spice-model-parameters-for-transistors-easily-and-accurately
 - [BJT](https://help.altair.com/activate/help/en_us/block_reference_guide/_mo/_lib/Spice/HTML/bjt_t.html)
 - [docs/spice_parameters.pdf](docs/spice_parameters.pdf)
+- https://web.stanford.edu/class/ee133/handouts/general/spice_ref.pdf
 
 ### BJT model
 - https://techdocs.altium.com/display/AMSE/Bipolar+Junction+Transistor+(BJT)+Model
 - **https://www.mikrocontroller.net/attachment/168555/Modeling_BJTs_in_Multisim.pdf**
+
 
 ### onsemi
 - https://www.onsemi.com/design/resources/technical-documentation

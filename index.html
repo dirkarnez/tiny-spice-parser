@@ -54,21 +54,15 @@
     <!-- BODY -->
     <!-- ################### -->
     <body>
-    <header>
-        <div class="container">
-            <h1>InTerActiiVe SiNe WaVe</h1>
-        </div>
-    </header>
-
     <div class="container">
         <div class="controls">
             <div class="slider-container">
                 <p>Left: <span id="left-disp"></span></p>
-                <input type="range" step="0.5" min="-20" max="0" value="-4" class="slider" id="left">
+                <input type="range" step="0.5" min="-20" max="0" value="0" class="slider" id="left">
             </div>
             <div class="slider-container">
                 <p>Right: <span id="right-disp"></span></p>
-                <input type="range" step="0.5" min="0" max="20" value="4" class="slider" id="right">
+                <input type="range" step="0.1" min="0" max="10" value="0.5" class="slider" id="right">
             </div>
             <div class="slider-container">
                 <p>Num Pts: <span id="N-disp"></span></p>
@@ -145,13 +139,54 @@
             .x(d => xScale(d.x))
             .y(d => yScale(d.y))
             
+
+/*
+    .MODEL 1N4148 D (
+        BV=100 
+        CJO=1.337p  // - junction capacitance, (=0F),
+        IBV=100p // - the reverse bias breakdown current, (=1xE-10A)
+        IS=8n  // saturation current, (default=1E-14A),
+        M=316.713m 
+        N=2.011  //the emission coefficient, (=1),
+        RL=3.521G
+        + 
+        RS=649.339m  // - the series resistance, (=0 ohm)
+        TT=8.953n  // transit time, (=0sec),
+        VJ=9.477
+    )
+*/
+
+        function diode(x_is_Vd) {
+            const boltzmannsConstantJoulePerK = 1.3806488e-23; // 'k'
+            const electronicChargeCoulomb = 1.602e-19; // 'q'
+            const roomTemperatureKelvin = 300;
+
+            // 1v to 184ma
+
+            // console.log((boltzmannsConstantJoulePerK * roomTemperatureKelvin) / electronicChargeCoulomb);
+
+            console.log(`@@@@@@@@${8e-9 * (Math.exp((electronicChargeCoulomb * 1) / (2 * boltzmannsConstantJoulePerK * roomTemperatureKelvin)) - 1)}`);
+
+            // For silicon diodes a typical saturation current is 1 * Math.pow(10, -12)
+            let saturationCurrentDefault = 1 * Math.pow(10, -12);
+            let saturationCurrent = 8 * Math.pow(10, -9); // 8×10-9 A
+            return saturationCurrent * (Math.exp((electronicChargeCoulomb * x_is_Vd) / ( 2 * boltzmannsConstantJoulePerK * roomTemperatureKelvin)) - 1)
+        }
+
         // sine stuff
         function makeSineData(left, right, N, amplitude, omega, theta) {
             const data = linspace(left, right, N);
-            const vals = data.map((d) => ({
-                x: d,
-                y: amplitude * Math.sin(d * omega + theta)
-            }));
+            debugger;
+
+            const vals = data.map((d) => {
+                //amplitude * Math.sin(d * omega + theta)
+                console.log(`1 ${diode(1.0)}`);
+                const obj = {
+                    x: d,
+                    y: diode(d)
+                };
+                return obj;
+            });
             return vals;
         }
 
@@ -221,7 +256,7 @@
             }  
 
         // initial plot
-        const startData = makeSineData(left=-4, right=4, N=100, amplitude=3, omega=1.5, theta=0);
+        const startData = makeSineData(left=0, right=2, N=100, amplitude=3, omega=1.5, theta=0);
         updateData(startData);
 
         // select sliders
@@ -234,7 +269,6 @@
 
         // overall update function
         function update() {
-
             newLeft = parseFloat(leftElem.node().value);
             newRight = parseFloat(rightElem.node().value);
             newN = parseInt(NElem.node().value);
