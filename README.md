@@ -79,7 +79,8 @@ tiny-spice-parser
 	bjt.prototype.load_ac = function(ckt) {
 	};
 ```
-### PSPICE grammar
+
+### (P)SPICE grammar
 - https://www.orcad.com/pspice-free-trial
 - https://www.seas.upenn.edu/~jan/spice/PSpice_ReferenceguideOrCAD.pdf
 - https://engineering.purdue.edu/~ee255d3/files/PSPICEtutorial.pdf
@@ -91,6 +92,9 @@ tiny-spice-parser
 - [BJT](https://help.altair.com/activate/help/en_us/block_reference_guide/_mo/_lib/Spice/HTML/bjt_t.html)
 - [docs/spice_parameters.pdf](docs/spice_parameters.pdf)
 - https://web.stanford.edu/class/ee133/handouts/general/spice_ref.pdf
+- https://ltwiki.org/files/SPICEdiodeModel.pdf
+- https://www.acsu.buffalo.edu/~wie/applet/spice_pndiode/spice_diode_table.html
+- [Diode Spice Model Parameters Explained - Free Online PCB CAD Library](https://www.ultralibrarian.com/2024/04/04/diode-spice-model-parameters-explained-ulc)
 
 ### BJT model
 - https://techdocs.altium.com/display/AMSE/Bipolar+Junction+Transistor+(BJT)+Model
