@@ -95,6 +95,8 @@ tiny-spice-parser
 - https://ltwiki.org/files/SPICEdiodeModel.pdf
 - https://www.acsu.buffalo.edu/~wie/applet/spice_pndiode/spice_diode_table.html
 - [Diode Spice Model Parameters Explained - Free Online PCB CAD Library](https://www.ultralibrarian.com/2024/04/04/diode-spice-model-parameters-explained-ulc)
+- [Circuit sandbox | Spinning Numbers](https://spinningnumbers.org/a/circuit-sandbox.html#diode-model)
+- [Analysis of Circuits - Intro](https://lpsa.swarthmore.edu/Systems/Electrical/mna/MNA1.html)
 
 ### BJT model
 - https://techdocs.altium.com/display/AMSE/Bipolar+Junction+Transistor+(BJT)+Model
