@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- ################### -->
+        <!-- STYLE -->
+        <!-- ################### -->
+        <style>
+            body {
+                margin: 0;
+            }
+
+            h1 {
+                text-align: center;
+                margin: 30px 5px 0;
+            }
+
+            p {
+                margin: 5px 0;
+            }
+
+            .slider-container p {
+                margin-right: 20px;
+            }
+
+            .container {
+                max-width: 620px;
+                margin: 10px auto;
+            }
+
+            .controls {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                /* border: 1px solid black; */
+            }
+
+            .slider-container {
+                display: flex;
+                justify-content: space-between;
+                width: 50%;
+                /* border: 1px solid black; */
+            }
+
+            .svg {
+                border: 1px solid black;
+            }
+        </style>
+        <meta charset="UTF-8">
+        <title>d3 Sine Wave</title>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.js"></script>
+    </head>
+
+    <!-- ################### -->
+    <!-- BODY -->
+    <!-- ################### -->
+    <body>
+    <header>
+        <div class="container">
+            <h1>InTerActiiVe SiNe WaVe</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="controls">
+            <div class="slider-container">
+                <p>Left: <span id="left-disp"></span></p>
+                <input type="range" step="0.5" min="-20" max="0" value="-4" class="slider" id="left">
+            </div>
+            <div class="slider-container">
+                <p>Right: <span id="right-disp"></span></p>
+                <input type="range" step="0.5" min="0" max="20" value="4" class="slider" id="right">
+            </div>
+            <div class="slider-container">
+                <p>Num Pts: <span id="N-disp"></span></p>
+                <input type="range" step="1" min="10" max="1000" value="100" class="slider" id="N">
+            </div>
+            <div class="slider-container">
+                <p>Amplitude: <span id="amplitude-disp"></span></p>
+                <input type="range" step="0.1" min="0.1" max="20.0" value="3.0" class="slider" id="amplitude">
+            </div>
+            <div class="slider-container">
+                <p>Omega [rad/s]: <span id="omega-disp"></span></p>
+                <input type="range" step="0.1" min="0.0" max="10.0" value="1.5" class="slider" id="omega">
+            </div>
+            <div class="slider-container">
+                <p>Theta [rad]: <span id="theta-disp"></span></p>
+                <input type="range" step="0.1" min="0.0" max="6.28318530718" value="0" class="slider" id="theta">
+            </div>
+        </div>
+    </div>
+
+    <div class="container" id="plot"></div>
+
+    <!-- ################### -->
+    <!-- JAVASCRIPT -->
+    <!-- ################### -->
+    <script>
+        // linspace in javascript
+        function linspace(left, right, N) {
+            let arr = [];
+            const step = (right - left) / (N - 1);
+            for (var ii = 0; ii < N; ii++) {
+                arr.push(left + (step * ii));
+            }
+            return arr;
+        }
+
+        // svg setup, conventional https://bl.ocks.org/mbostock/3019563
+        const margin = {top: 20, right: 30, bottom: 30, left: 30};
+        const widthNom = 600;
+        const heightNom = 400;
+        const width = widthNom - margin.left - margin.right;
+        const height = heightNom - margin.top - margin.bottom;
+        const transLen = 1000; // ms
+
+        // style page based on svg
+        d3.selectAll(".container").style("max-width", () => widthNom + 'px')
+
+        const svg = d3.select("#plot")
+            .append("svg")
+                .attr("class", "svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+                .attr("class", "grp")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+
+        // x scale and axis
+        const xScale = d3.scaleLinear()
+            .range([0, width]);
+        const xAxis = d3.axisBottom(xScale); // xAxis is function generating svg axis elems
+        svg.append("g")
+            .attr("class", "xAxis")
+            .attr("transform", "translate(0," + height + ")");
+
+        // y scale and axis
+        const yScale = d3.scaleLinear()
+            .range([height, 0]);
+        const yAxis = d3.axisLeft(yScale); // yAxis is function generating svg axis elems
+        svg.append("g")
+            .attr("class", "yAxis");
+
+        // line generator
+        const line = d3.line()
+            .x(d => xScale(d.x))
+            .y(d => yScale(d.y))
+            
+        // sine stuff
+        function makeSineData(left, right, N, amplitude, omega, theta) {
+            const data = linspace(left, right, N);
+            const vals = data.map((d) => ({
+                x: d,
+                y: amplitude * Math.sin(d * omega + theta)
+            }));
+            return vals;
+        }
+
+        // chart stuff
+        function updateData(sinValues) {
+
+            // update axis' based on data
+            xScale.domain([d3.min(sinValues.map(d => d.x)), d3.max(sinValues.map(d => d.x))]);
+            svg.selectAll(".xAxis")
+                .transition()
+                .duration(transLen)
+                .call(xAxis);
+            
+            yScale.domain([d3.min(sinValues.map(d => d.y)), d3.max(sinValues.map(d => d.y))]);
+            svg.selectAll(".yAxis")
+                .transition()
+                .duration(transLen)
+                .call(yAxis);
+
+            // circles
+            const circles = svg
+                .selectAll("circle")
+                .data(sinValues)
+
+            circles.exit() // in old data but not in new data
+                .remove()
+            
+            // circles // already exist
+            //     .attr("cx", d => xScale(d.x))
+            //     .attr("cy", d => yScale(d.y))
+            //     .attr("r", 5)
+
+            circles.enter() // newly added
+                .append("circle")
+                .merge(circles)
+                .transition()
+                .duration(transLen)
+                .attr("cx", d => xScale(d.x))
+                .attr("cy", d => yScale(d.y))
+                .attr("r", 5)
+
+            // lines
+            const lines = svg
+                .selectAll(".line")
+                .data([sinValues]); // ??
+
+            lines.exit() // in old data but not in new data
+                .remove()
+            
+            // lines // already exist
+            //     .attr("d", line)
+            //     .attr("fill", "none")
+            //     .attr("stroke", "steelblue")
+            //     .attr("stroke-width", 2.5)
+
+            lines.enter() // newly added
+                .append("path")
+                .attr("class", "line") // ??
+                .merge(lines)
+                .transition()
+                .duration(transLen)
+                .attr("d", line)
+                .attr("fill", "none")
+                .attr("stroke", "steelblue")
+                .attr("stroke-width", 2.5)
+
+            }  
+
+        // initial plot
+        const startData = makeSineData(left=-4, right=4, N=100, amplitude=3, omega=1.5, theta=0);
+        updateData(startData);
+
+        // select sliders
+        leftElem = d3.select("#left")
+        rightElem = d3.select("#right")
+        NElem = d3.select("#N")
+        amplitudeElem = d3.select("#amplitude")
+        omegaElem = d3.select("#omega")
+        thetaElem = d3.select("#theta")
+
+        // overall update function
+        function update() {
+
+            newLeft = parseFloat(leftElem.node().value);
+            newRight = parseFloat(rightElem.node().value);
+            newN = parseInt(NElem.node().value);
+            newAmp = parseFloat(amplitudeElem.node().value);
+            newOmeg = parseFloat(omegaElem.node().value);
+            newTheta = parseFloat(thetaElem.node().value);
+
+            sinValues = makeSineData(
+                left=newLeft,
+                right=newRight,
+                N=newN,
+                amplitude=newAmp,
+                omega=newOmeg,
+                theta=newTheta
+            )
+            updateData(sinValues)
+        }
+
+        // add event listeners
+        leftElem.on("change", update)
+        rightElem.on("change", update)
+        NElem.on("change", update)
+        amplitudeElem.on("change", update)
+        omegaElem.on("change", update)
+        thetaElem.on("change", update)
+
+        // add slider value text
+        function updateSliders() {
+            dispIds = [
+                "right-disp",
+                "left-disp",
+                "N-disp",
+                "amplitude-disp",
+                "omega-disp",
+                "theta-disp"
+            ];
+
+            for (ii = 0; ii < dispIds.length; ii++) {
+                dispId = dispIds[ii]
+                sliderId = dispId.split("-")[0]
+
+                const sliderElem = document.getElementById(sliderId);
+                const dispElem = document.getElementById(dispId);
+                dispElem.innerHTML = sliderElem.value; // Display the default slider value
+                
+                // Update the current slider value (each time you drag the slider handle)
+                sliderElem.oninput = function() {
+                    dispElem.innerHTML = this.value;
+                }
+            };
+        };
+        updateSliders()    
+    </script>
+  </body>
+</html>
